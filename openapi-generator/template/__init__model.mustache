@@ -1,0 +1,15 @@
+{{#models}}
+{{#model}}
+from {{modelPackage}}.{{classFilename}} import {{classname}}
+{{/model}}
+{{/models}}
+
+API_VERSION: str = "{{appVersion}}"
+
+__all__: list[str] = [
+  {{#models}}
+  {{#model}}
+  "{{classname}}",
+  {{/model}}
+  {{/models}}
+]

@@ -1,0 +1,100 @@
+{
+  "name": "Python 3",
+  "build": {
+    "context": ".",
+    "dockerfile": "Dockerfile"
+    // If you want to run with GPU, uncomment the following line and comment the above line.
+    // "dockerfile": "nvidia-gpu.Dockerfile"
+  },
+  // If you want to run with GPU, uncomment the following lines.
+  // "runArgs": [
+  //   "--runtime", 
+  //   "nvidia",
+  //   "--gpus",
+  //   "all"
+  // ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.autoSave": "onFocusChange",
+        "autoDocstring.docstringFormat": "numpy",
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "editor.formatOnSave": true,
+        "editor.renderWhitespace": "all",
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.languageServer": "Pylance",
+        "black-formatter.path": [
+          "/home/vscode/.local/bin/black"
+        ],
+        "flake8.path": [
+          "/home/vscode/.local/bin/flake8"
+        ],
+        "mypy-type-checker.path": [
+          "/home/vscode/.local/bin/mypy"
+        ],
+        "pylint.args": [
+          "--enable-all-extensions"
+        ],
+        "pylint.severity": {
+          "convention": "Information",
+          "error": "Error",
+          "fatal": "Error",
+          "refactor": "Information",
+          "warning": "Warning",
+          "info": "Information"
+        },
+        "pylint.path": [
+          "/home/vscode/.local/bin/pylint"
+        ],
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter",
+          "editor.formatOnSave": true
+        },
+        "shellformat.useEditorConfig": true,
+        "[dockerfile]": {
+          "editor.formatOnSave": false
+        },
+        "shellformat.effectLanguages": [
+          "shellscript",
+          "dotenv",
+          "hosts",
+          "jvmoptions",
+          "ignore",
+          "gitignore",
+          "properties",
+          "spring-boot-properties",
+          "azcli",
+          "bats"
+        ]
+      },
+      "extensions": [
+        "42crunch.vscode-openapi",
+        "editorconfig.editorconfig",
+        "exiasr.hadolint",
+        "foxundermoon.shell-format",
+        "GitHub.copilot",
+        "github.vscode-github-actions",
+        "matangover.mypy",
+        "mermade.openapi-lint",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "ms-python.black-formatter",
+        "ms-python.flake8",
+        "ms-python.isort",
+        "ms-python.pylint",
+        "ms-python.python",
+        "njpwerner.autodocstring",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "timonwong.shellcheck",
+        "twixes.pypi-assistant",
+        "vscode-icons-team.vscode-icons",
+        "zoellner.openapi-preview"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install --user -r requirements.in",
+  "remoteUser": "vscode"
+}

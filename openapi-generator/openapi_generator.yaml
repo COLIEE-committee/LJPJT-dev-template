@@ -1,0 +1,11 @@
+generatorName: python-flask
+templateDir: template
+outputDir: generated
+inputSpec: ../schema.yaml
+additionalProperties:
+  packageName: "src"
+globalProperties:
+  apiDocs: false
+  apiTests: false
+  modelDocs: false
+  modelTests: false
