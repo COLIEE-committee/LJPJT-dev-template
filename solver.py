@@ -1,5 +1,4 @@
 import configparser
-import json
 import random
 from pathlib import Path
 from typing import Final
