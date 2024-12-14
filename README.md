@@ -1,8 +1,8 @@
 # LJPJT System Development Template Repository
-Kotaro Sakamoto [@ktr-skmt](https://github.com/ktr-skmt) ( sakamoto.ljpjt@besna.institute )
-
 This repository is a template repository for system development of the shared task LJPJT. By clicking the `Use this template` button on GitHub, you can copy and use this repository.
 
+Website: https://ljpjt25.coliee.org/  
+Contact: Kotaro Sakamoto [@ktr-skmt](https://github.com/ktr-skmt) ( sakamoto.ljpjt@besna.institute )  
 ## Setting up the development environment
 
 We **recommend** development using [VSCode](https://azure.microsoft.com/ja-jp/products/visual-studio-code/).
@@ -44,12 +44,12 @@ Remote-Containers: Reopen in Container
 ```
 
 ### Preparing the Configuration File
-Set the team name and affiliation to the values provided during registration in `app.ini` under `TEAM_NAME` and `AFFILIATION` respectively (note: hyphens "-" are not allowed for either).
-Set the system name to `SYSTEM_NAME` (note: hyphens "-" are not allowed).
+Set the `TEAM_NAME` and `AFFILIATION` in `app.ini` to the team name and affiliation submitted during registration (note: hyphens "-" are not allowed for either).  
+Set the system name in `SYSTEM_NAME` (note: hyphens "-" are not allowed).  
 
-Set a unique API key for each team under `API_KEY`. API keys can be obtained upon completion of registration.
+Set the API key specific to each team in `API_KEY`. The API key will be provided upon the completion of registration.  
 
-Set the specified file name for the test data from the organizers to `TEST_DATA`.
+Set the file name of the test data specified by the organizers in `TEST_DATA`
 
 Set `MODE` to either `development` or `leaderboard`. In `development` mode, evaluation results can be received without being reflected on the leaderboard. In `leaderboard` mode, the received evaluation results will be reflected on the leaderboard.
 
@@ -213,7 +213,7 @@ pip freeze >> requirements.in
 
 ### Updating requirement.txt
 
-Execute the following command
+Instead of updating requirements.txt manually, execute the following command
 ```bash
 rm requirements.txt
 ./scripts/generate_lockfile.sh
