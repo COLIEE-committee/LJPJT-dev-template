@@ -18,7 +18,7 @@ TEST_DATA_FILENAME: Final[str] = CONFIG["settings"]["TEST_DATA"]
 
 
 # TODO: Write your own algorithm
-def solve(test_data: list[Tort]) -> list[Tort]:  # pylint: disable=unused-argument
+def solve(test_data: list[Tort]) -> list[Tort]:
     # print(f"TEST DATA: {TEST_DATA_FILENAME}")
     system_results: list[Tort] = []
     for tort in test_data:
