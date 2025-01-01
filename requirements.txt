@@ -125,7 +125,7 @@ pygments==2.18.0
     # via rich
 pylint==3.3.2
     # via -r requirements.in
-pyupgrade==3.19.0
+pyupgrade==3.19.1
     # via -r requirements.in
 pyyaml==6.0.2
     # via
