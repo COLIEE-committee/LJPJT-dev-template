@@ -1,6 +1,8 @@
 # pylint: disable=duplicate-code
 import configparser
 import json
+import time
+import uuid
 from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
@@ -31,6 +33,7 @@ def create_url(endpoint: str) -> str:
     return f"{BASE_URL}{endpoint}?key={API_KEY}"
 
 
+TOKEN_VALIDATOR_URL: Final[str] = create_url("token_validator")
 EVALUATION_RESULT_URL: Final[str] = create_url("evaluation_result")
 RESULT_UPLOADER_URL: Final[str] = create_url("result_uploader")
 DISTRIBUTION_DOWNLOADER_URL: Final[str] = create_url("distribution_downloader")
@@ -67,8 +70,9 @@ def _download_testdata() -> list[Tort]:
     return [Tort.from_dict(json.loads(line)) for line in jsonl.split("\n")]
 
 
-def _submit(submission: list[Tort], filename: str) -> None:
+def _submit(submission: list[Tort], filename: str, token: str) -> None:
     json_data: dict[str, Any] = {
+        "token": token,
         "api_key": API_KEY,
         "filename": filename,
         "mode": MODE,
@@ -78,8 +82,72 @@ def _submit(submission: list[Tort], filename: str) -> None:
     requests.post(RESULT_UPLOADER_URL, data=text_data, headers={"Content-Type": "application/json"}, timeout=(3.0, 7.5))
 
 
-def evaluate(filename: str) -> tuple[str, dict[str, Any]]:
+def validate_token(team: str, token: str, is_first: bool) -> tuple[bool, bool]:
+    text_data: str = json.dumps({"team": team, "token": token, "is_first": is_first})
+    response = requests.post(
+        TOKEN_VALIDATOR_URL,
+        data=text_data,
+        headers={"Content-Type": "application/json"},
+        timeout=(3.0, 7.5),
+    )
+    if response.status_code == 200:
+        json_data = response.json()
+        is_valid: bool = json_data.get("is_valid", False)
+        return is_valid, json_data.get("exceeded_revision_limit", False)
+    return False, False
+
+
+def schedule(base_time: float, interval: int, timeout: int, team: str, token: str) -> bool:
+    """
+    一定間隔でトークンの有効性をチェックするスケジューラ。
+    トークンが無効な間 (False) はループを継続し、有効になったらループを抜ける。
+
+    Args:
+        base_time (float): 開始基準時刻 (通常は time.time() を渡す)
+        interval (int): 次のスケジュールまでの間隔 (秒)
+        timeout (int): タイムアウト (秒)
+        team (str): トークン検証で使うチーム情報
+        token (str): 検証対象のトークン
+
+    Returns:
+        bool: True ならループ継続、False ならループを抜ける
+    """
+    print(".", end="")
+
+    # NOTE: 経過時間を測定
+    elapsed: float = time.time() - base_time
+    if timeout < elapsed:
+        raise TimeoutError("Timeout")
+
+    # NOTE: 次の実行時刻までの待機時間を計算
+    sleep_time: float = interval - (elapsed % interval)
+    time.sleep(sleep_time)
+
+    # NOTE: トークンが無効な間ループを回したい
+    is_valid, exceeded_revision_limit = validate_token(team, token, is_first=False)
+    if exceeded_revision_limit:
+        raise ValueError("Exceeded revision limit")
+    return not is_valid
+
+
+def first_check(team: str, token: str) -> bool:
+    is_valid, exceeded_revision_limit = validate_token(team, token, is_first=True)
+    if exceeded_revision_limit:
+        raise ValueError("Exceeded revision limit")
+    return is_valid
+
+
+def evaluate(filename: str, token: str) -> tuple[str, dict[str, Any]]:
     data: str = f"{MODE}/{filename}"
+    team: str = filename.split(".")[0].split("_")[1]
+
+    if not first_check(team, token):
+        # NOTE: tokenが一致するまで待つ、または、タイムアウトで終了する
+        while schedule(  # pylint: disable=while-used
+            base_time=time.time(), interval=10, timeout=600, team=team, token=token
+        ):
+            pass
+    print()
     response = requests.post(
         EVALUATION_RESULT_URL, data=data, headers={"Content-Type": "text/plain"}, timeout=(3.0, 7.5)
     )
@@ -91,6 +159,7 @@ def evaluate(filename: str) -> tuple[str, dict[str, Any]]:
     now: str = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f"{tokens[0]}_{now}.{tokens[-1]}"
 
+    print(f'The number of revisions: {evaluation_result["num_of_revisions"]}')
     print(f"EVALUATION RESULT: evaluation_results/{MODE}/{filename}")
     print("---")
     print("Tort prediction task")
@@ -135,12 +204,13 @@ def evaluate(filename: str) -> tuple[str, dict[str, Any]]:
 
 def pipeline(submission: list[Tort]) -> None:
     filename: str = submission_filename()
+    token: str = uuid.uuid1().hex
 
-    _submit(submission, filename)
+    _submit(submission, filename, token)
 
     filename_with_timestamp: str
     evaluation_result: dict[str, Any]
-    filename_with_timestamp, evaluation_result = evaluate(filename)
+    filename_with_timestamp, evaluation_result = evaluate(filename, token)
 
     _log_submission(submission, filename_with_timestamp)
 
