@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt --strip-extras requirements.in
 #
-astroid==3.3.6
+astroid==3.3.8
     # via pylint
 attrs==24.2.0
     # via
@@ -123,7 +123,7 @@ pyflakes==3.2.0
     #   flake8
 pygments==2.18.0
     # via rich
-pylint==3.3.2
+pylint==3.3.4
     # via -r requirements.in
 pyupgrade==3.19.0
     # via -r requirements.in
