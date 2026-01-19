@@ -28,14 +28,22 @@ def solve(test_data: list[Tort]) -> list[Tort]:
                 tort_id=tort.tort_id,
                 undisputed_facts=tort.undisputed_facts,
                 plaintiff_claims=[
-                    PlaintiffClaim(id=claim.id, description=claim.description, is_accepted=bool(random.getrandbits(1)))
+                    PlaintiffClaim(
+                        id=claim.id,
+                        description=claim.description,
+                        is_accepted=bool(random.getrandbits(1)),  # noqa: S311
+                    )
                     for claim in tort.plaintiff_claims
                 ],
                 defendant_claims=[
-                    DefendantClaim(id=claim.id, description=claim.description, is_accepted=bool(random.getrandbits(1)))
+                    DefendantClaim(
+                        id=claim.id,
+                        description=claim.description,
+                        is_accepted=bool(random.getrandbits(1)),  # noqa: S311
+                    )
                     for claim in tort.defendant_claims
                 ],
-                court_decision=bool(random.getrandbits(1)),
+                court_decision=bool(random.getrandbits(1)),  # noqa: S311
             )
         )
     # print("SYSTEM RESULTS:")
