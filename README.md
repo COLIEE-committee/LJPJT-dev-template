@@ -1,7 +1,7 @@
 # LJPJT System Development Template Repository
 This repository is a template repository for system development of the shared task LJPJT. By clicking the `Use this template` button on GitHub, you can copy and use this repository.
 
-Website: https://ljpjt25.coliee.org/  
+Website: https://ljpjt26.coliee.org/  
 Contact: Kotaro Sakamoto [@ktr-skmt](https://github.com/ktr-skmt) ( sakamoto.ljpjt@besna.institute )  
 ## Setting up the development environment
 
