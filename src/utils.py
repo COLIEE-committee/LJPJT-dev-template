@@ -26,7 +26,7 @@ SYSTEM: Final[str] = CONFIG["system"]["SYSTEM_NAME"]
 PATH_TO_DATASET: Final[Path] = PATH_TO_ROOT / "dataset"
 
 
-BASE_URL: Final[str] = "https://asia-northeast1-ljpjt-412809.cloudfunctions.net/"
+BASE_URL: Final[str] = "https://asia-northeast1-ljpjt26.cloudfunctions.net/"
 
 
 def create_url(endpoint: str) -> str:
@@ -62,7 +62,10 @@ def _log_evaluation_results(evaluation_result: dict[str, Any], filename: str) ->
 
 def _download_testdata() -> list[Tort]:
     response = requests.post(
-        DISTRIBUTION_DOWNLOADER_URL, data=TEST_DATA_FILENAME, headers={"Content-Type": "text/plain"}, timeout=(3.0, 7.5)
+        DISTRIBUTION_DOWNLOADER_URL,
+        data=TEST_DATA_FILENAME,
+        headers={"Content-Type": "text/plain"},
+        timeout=(3.0, 15.0),
     )
     jsonl: str = response.text
     with open(PATH_TO_DATASET / TEST_DATA_FILENAME, mode="w", encoding="utf-8") as f:
@@ -79,7 +82,9 @@ def _submit(submission: list[Tort], filename: str, token: str) -> None:
         "body": [tort.to_dict() for tort in submission],
     }
     text_data: str = json.dumps(json_data)
-    requests.post(RESULT_UPLOADER_URL, data=text_data, headers={"Content-Type": "application/json"}, timeout=(3.0, 7.5))
+    requests.post(
+        RESULT_UPLOADER_URL, data=text_data, headers={"Content-Type": "application/json"}, timeout=(3.0, 15.0)
+    )
 
 
 def validate_token(team: str, token: str, is_first: bool) -> tuple[bool, bool]:
@@ -88,7 +93,7 @@ def validate_token(team: str, token: str, is_first: bool) -> tuple[bool, bool]:
         TOKEN_VALIDATOR_URL,
         data=text_data,
         headers={"Content-Type": "application/json"},
-        timeout=(3.0, 7.5),
+        timeout=(3.0, 15.0),
     )
     if response.status_code == 200:
         json_data = response.json()
@@ -149,7 +154,7 @@ def evaluate(filename: str, token: str) -> tuple[str, dict[str, Any]]:
             pass
     print()
     response = requests.post(
-        EVALUATION_RESULT_URL, data=data, headers={"Content-Type": "text/plain"}, timeout=(3.0, 7.5)
+        EVALUATION_RESULT_URL, data=data, headers={"Content-Type": "text/plain"}, timeout=(3.0, 15.0)
     )
     evaluation_result: dict[str, Any] = {}
     if response.status_code == 200:

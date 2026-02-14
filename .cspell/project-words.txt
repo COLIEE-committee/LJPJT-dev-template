@@ -57,7 +57,9 @@ jsonify
 jsonlines
 jsonschema
 jvmoptions
+Kotaro
 libcudnn8
+LJPJT
 markupsafe
 matangover
 mccabe
@@ -108,6 +110,7 @@ pyyaml
 rgxs
 ropeproject
 rpds
+Sakamoto
 Scrapy
 sdist
 Serialisation
@@ -115,6 +118,7 @@ setaf
 setuptools
 shellcheck
 shellformat
+skmt
 Spyder
 spyderproject
 spyproject
