@@ -62,7 +62,7 @@ SYSTEM_NAME = System3
 
 [settings]
 API_KEY = your-api-key-here
-TEST_DATA = test001.jsonl
+TEST_DATA = LJPJT26-test001.jsonl
 MODE = development
 ```
 
@@ -76,7 +76,7 @@ MODE = development
 ```python
 test_data: list[Tort] = [
     Tort(
-        version="test001.jsonl",
+        version="LJPJT26-test001.jsonl",
         tort_id="0",
         undisputed_facts=[
             UndisputedFact(
@@ -113,7 +113,7 @@ test_data: list[Tort] = [
 ```python
 return [
     Tort(
-        version="test001.jsonl",
+        version="LJPJT26-test001.jsonl",
         tort_id="0",
         undisputed_facts=[
             UndisputedFact(
@@ -191,7 +191,7 @@ TypeError: 'NoneType' object is not subscriptable
 `solve`関数の実行結果は`submissions/{MODE}/`（`submissions/development/`または`submissions/leaderboard/`）に保存される。ファイル名は`app.ini`に設定された`TEST_DATA`と`SYSTEM_NAME`と`AFFILIATION`と`TEAM_NAME`とタイムスタンプによって決まる。`TEST_DATA`が`test.jsonl`の場合、ファイル名は`test_{SYSTEM_NAME}_{AFFILIATION}_{TEAM_NAME}_{タイムスタンプ}.jsonl`である。ファイルの中身は`solve`関数の実行結果である。
 
 #### 評価結果
-評価結果は、`evaluation_results/{MODE}/`（`evaluation_results/development/`または`evaluation_results/leaderboard/`）に保存される。ファイル名は`app.ini`に設定された`TEST_DATA`と`SYSTEM_NAME`と`AFFILIATION`と`TEAM_NAME`とタイムスタンプによって決まる。`TEST_DATA`が`test001.jsonl`の場合、ファイル名は`test001_{SYSTEM_NAME}_{AFFILIATION}_{TEAM_NAME}_{タイムスタンプ}.jsonl`である。ファイルの中身は`solve`関数の実行結果に対する評価結果である。
+評価結果は、`evaluation_results/{MODE}/`（`evaluation_results/development/`または`evaluation_results/leaderboard/`）に保存される。ファイル名は`app.ini`に設定された`TEST_DATA`と`SYSTEM_NAME`と`AFFILIATION`と`TEAM_NAME`とタイムスタンプによって決まる。`TEST_DATA`が`LJPJT26-test001.jsonl`の場合、ファイル名は`LJPJT26-test001_{SYSTEM_NAME}_{AFFILIATION}_{TEAM_NAME}_{タイムスタンプ}.jsonl`である。ファイルの中身は`solve`関数の実行結果に対する評価結果である。
 
 ## Python の依存パッケージの管理
 

@@ -61,7 +61,7 @@ SYSTEM_NAME = System3
 
 [settings]
 API_KEY = your-api-key-here
-TEST_DATA = test001.jsonl
+TEST_DATA = LJPJT26-test001.jsonl
 MODE = development
 ```
 
@@ -75,7 +75,7 @@ The input data is a list of `Tort`. The input data has `null` values for `is_acc
 ```python
 test_data: list[Tort] = [
     Tort(
-        version="test001.jsonl",
+        version="LJPJT26-test001.jsonl",
         tort_id="0",
         undisputed_facts=[
             UndisputedFact(
@@ -113,7 +113,7 @@ The output data is also a list of `Tort`. As a result of the solver's processing
 ```python
 return [
     Tort(
-        version="test001.jsonl",
+        version="LJPJT26-test001.jsonl",
         tort_id="0",
         undisputed_facts=[
             UndisputedFact(
